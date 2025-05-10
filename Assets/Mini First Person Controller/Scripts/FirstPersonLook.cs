@@ -10,17 +10,10 @@ public class FirstPersonLook : MonoBehaviour
     Vector2 velocity;
     Vector2 frameVelocity;
 
-    private InputSystem_Actions controls;
-
     void Reset()
     {
         // Get the character from the FirstPersonMovement in parents.
         character = GetComponentInParent<FirstPersonMovement>().transform;
-    }
-
-    private void Awake()
-    {
-        controls = new InputSystem_Actions();
     }
 
     void Start()
@@ -29,20 +22,10 @@ public class FirstPersonLook : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    private void OnEnable()
-    {
-        controls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        controls.Disable();
-    }
-
     void Update()
     {
         // Get smooth velocity.
-        Vector2 mouseDelta = controls.Player.Look.ReadValue<Vector2>();
+        Vector2 mouseDelta = InputManager.Instance.controls.Player.Look.ReadValue<Vector2>();
         Vector2 rawFrameVelocity = mouseDelta * sensitivity;
         frameVelocity = Vector2.Lerp(frameVelocity, rawFrameVelocity, 1 / smoothing);
         velocity += frameVelocity;
